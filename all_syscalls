@@ -1,0 +1,7 @@
+#!/usr/sbin/dtrace -qs
+
+syscall:::
+/execname!="all_syscalls"/
+{
+   printf("%s:%d\n", execname, arg1);
+}

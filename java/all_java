@@ -1,0 +1,7 @@
+#!/usr/sbin/dtrace -qs
+
+syscall:::
+/execname!="all_java" && execname=="java"/
+{
+  printf("pid:%d execname:%s 1:%d 2:%d 3:%d\n", $pid, execname, arg0, arg1, arg2);
+}

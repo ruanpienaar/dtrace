@@ -1,0 +1,29 @@
+#!/usr/bin/env escript
+
+main([Port]) ->
+	main(["localhost", Port]);
+main([Host, Port]) ->
+	connector(Host, Port);
+main(_) ->
+	io:format("Usage: connector.esh PORT [uses localhost] OR connector.esh HOST PORT\n").
+
+connector(Host, Port) ->
+        case gen_tcp:connect(Host, list_to_integer(Port), []) of
+                {ok, S} ->
+                        io:format("Connected to ~s:~s\n", [Host, Port]),
+                        sender(S),
+                        gen_tcp:close(S),
+                        io:format("Disconnecting...~s\n", [timer:sleep(1000)]);
+                Error ->
+                        io:format("...No connection to ~s:~s, ~p\n", [Host, Port, Error])
+        end.
+
+sender(Socket) ->
+	case gen_tcp:send(Socket, <<1:4096>>) of
+		ok ->
+			io:format("... sent ...\n"),
+			timer:sleep(1000),
+			sender(Socket);
+		Error ->
+			io:format("Send error ~p~n", [Error])
+	end.

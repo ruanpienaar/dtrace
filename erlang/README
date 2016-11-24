@@ -1,0 +1,1 @@
+it's useful to mention, you should configure erlang with --enable-vm-probes --with-dynamic-trace=dtrace

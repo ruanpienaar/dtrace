@@ -1,0 +1,12 @@
+#!/usr/bin/env escript
+
+main([Port]) ->
+	{ok, L} = gen_tcp:listen(list_to_integer(Port), []),
+	listen_loop(L, Port);
+main(_) ->
+	io:format("Usage: acceptor.esh PORT\n", []).
+
+listen_loop(L, Port) ->
+	io:format("accept...\n", []),
+	{ok, _S} = gen_tcp:accept(L),
+	listen_loop(L, Port).
